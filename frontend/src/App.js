@@ -45,7 +45,7 @@ const App = () => {
         <Redirect to="/" />
       </Switch>
     );
-  } else {
+  } else { 
     routes = (
       <Switch>
         <Route path="/" exact>

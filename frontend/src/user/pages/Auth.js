@@ -104,5 +104,5 @@ const Auth = () => {
     </Card>
   );
 };
-
+ 
 export default Auth;
