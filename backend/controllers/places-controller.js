@@ -68,7 +68,8 @@ const createPlace = async (req, res, next) => {
   const createdPlace = new Place({
     title,
     description,
-    image: "abcd",
+    image:
+      "https://images.unsplash.com/photo-1598662997134-e4294333ec6b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=751&q=80",
     location: coordinates,
     address,
     creator,
@@ -129,7 +130,7 @@ const deletePlace = async (req, res, next) => {
 
   let place;
   try {
-    place = await Place.findById(placeId).populate('creator');
+    place = await Place.findById(placeId).populate("creator");
   } catch (error) {
     console.log(error);
     return next(new HttpError("Deleting place failed, please try again!", 500));
@@ -144,7 +145,7 @@ const deletePlace = async (req, res, next) => {
     session.startTransaction();
     await place.remove({ session });
     place.creator.places.pull(place);
-    await place.creator.save({session});
+    await place.creator.save({ session });
     await session.commitTransaction();
   } catch (error) {
     console.log(error);
