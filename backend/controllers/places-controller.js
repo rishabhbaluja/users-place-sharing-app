@@ -6,6 +6,7 @@ const Place = require("../models/place");
 const User = require("../models/user");
 const mongoose = require("mongoose");
 const user = require("../models/user");
+const fs = require("fs");
 
 const getPlaceById = async (req, res, next) => {
   const placeId = req.params.pid;
@@ -68,8 +69,7 @@ const createPlace = async (req, res, next) => {
   const createdPlace = new Place({
     title,
     description,
-    image:
-      "https://images.unsplash.com/photo-1598662997134-e4294333ec6b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=751&q=80",
+    image: req.file.path,
     location: coordinates,
     address,
     creator,
@@ -140,6 +140,8 @@ const deletePlace = async (req, res, next) => {
     return next(new HttpError("Could not find place for this id.", 404));
   }
 
+  const imagePath = place.image;
+
   try {
     const session = await mongoose.startSession();
     session.startTransaction();
@@ -151,6 +153,8 @@ const deletePlace = async (req, res, next) => {
     console.log(error);
     return next(new HttpError("Deleting place failed, please try again!", 500));
   }
+
+  fs.unlink(imagePath, (err)=> console.log(err));
 
   res.status(200).json({ message: "Deleted place." });
 };

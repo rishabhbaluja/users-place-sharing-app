@@ -4,10 +4,17 @@ const mongoose = require("mongoose");
 const placesRoutes = require("./routes/places-routes");
 const usersRoutes = require("./routes/users-routes");
 const HttpError = require("./models/http-error");
+const fs = require("fs");
+const path = require("path");
 
 const app = express();
 
 app.use(bodyParser.json());
+
+//Filter for requests that starts with /uploads/images
+//static is a middleware that just returns the requested file. Not execute it. Pass in the path.
+//Now files present in this folder only will bew returned
+app.use("/uploads/images", express.static(path.join("uploads", "images")));
 
 //CORS
 //We add certain header to the response so later when a response is send back from a more specfic
@@ -35,6 +42,13 @@ app.use("*", (req, res, next) => {
 });
 
 app.use((error, req, res, next) => {
+  //File is present in request
+  if (req.file) {
+    //path property exists on the file object which multer adds to the request.
+    fs.unlink(req.file.path, (err) => {
+      console.log(err);
+    });
+  }
   if (res.headerSent) {
     return next(error);
   }
