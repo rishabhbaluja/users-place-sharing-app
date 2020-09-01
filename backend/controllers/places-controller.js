@@ -115,7 +115,7 @@ const updatePlace = async (req, res, next) => {
   try {
     updatedPlace = await Place.findById(placeId);
 
-    if (updatePlace.creator.toString() !== req.userData.userId) {
+    if (updatedPlace.creator.toString() !== req.userData.userId) {
       return next(new HttpError("You are not allowed to edit this place!", 401));
     }
 

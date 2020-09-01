@@ -58,7 +58,7 @@ app.use((error, req, res, next) => {
 
 mongoose
   .connect(
-    "mongodb://admin:admin@user-going-places-shard-00-00.uaidv.mongodb.net:27017,user-going-places-shard-00-01.uaidv.mongodb.net:27017,user-going-places-shard-00-02.uaidv.mongodb.net:27017/user-going-places?ssl=true&replicaSet=atlas-664l7g-shard-0&authSource=admin&retryWrites=true&w=majority",
+    `mongodb://${process.env.DB_USER}:${process.env.DB_PASSWORD}@user-going-places-shard-00-00.uaidv.mongodb.net:27017,user-going-places-shard-00-01.uaidv.mongodb.net:27017,user-going-places-shard-00-02.uaidv.mongodb.net:27017/${process.env.DB_NAME}?ssl=true&replicaSet=atlas-664l7g-shard-0&authSource=admin&retryWrites=true&w=majority`,
     { useNewUrlParser: true, useUnifiedTopology: true }
   )
   .then(() => {

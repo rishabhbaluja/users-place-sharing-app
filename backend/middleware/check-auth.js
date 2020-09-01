@@ -15,7 +15,7 @@ module.exports = (req, res, next) => {
       throw new Error("Auth failed");
     }
     //This decodedToken will now have the userId and email.
-    const decodedToken = jwt.verify(token, "secretKey");
+    const decodedToken = jwt.verify(token, process.env.JWT_KEY);
     req.userData = { userId: decodedToken.userId };
     next();
   } catch (err) {
